@@ -178,7 +178,6 @@ export class LoginComponent implements OnInit {
 
           localStorage.setItem('rights', rightsString);
 
-          // console.log(tokenDecode.rights)
           localStorage.setItem(
             'profilePicture',
             user.photoName
