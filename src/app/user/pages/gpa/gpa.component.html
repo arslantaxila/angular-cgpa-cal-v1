@@ -1,0 +1,212 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<div class="grid">
+    <div class="col-12 page-layout">
+        <div class="page-actions">
+            <p-button *ngIf="createPermission" (click)="showDialog()" label="Create Semester" icon="pi pi-plus"
+                styleClass="p-button-sm btn-transparent"></p-button>
+
+            <p-button *ngIf="createPermission" (click)="downloadAttachment()" label="Download Format"
+                icon="pi pi-download" styleClass="p-button-sm btn-transparent"></p-button>
+
+            <p-button *ngIf="createPermission" label="Upload CSV" icon="pi pi-upload"
+                styleClass="p-button-sm btn-transparent" (click)="triggerFileInput()">
+                <input #fileupload type="file" (change)="selectAttachment($event)" style="display: none"
+                accept=".csv" />
+            </p-button>
+
+
+        </div>
+
+        <div class="page-inner">
+            <div class="flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="text-850 font-bold text-2xl" style="background-color: red;">
+                        CGPA: {{cgpa}}
+                    </h1>
+                </div>
+            </div>
+            <div class="grid mt-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="text-white font-bold text-xl mb-0">Semester's</h5>
+                        </div>
+                        <div class="card-body">
+                            <p-scrollPanel [style]="{ width: '100%', height: '600px' }" styleClass="scroll-color">
+                                <p-table #dt1 [value]="semesters" [rows]="10" [paginator]="true"
+                                    [tableStyle]="{ 'min-width': '60rem' }" [rowHover]="true" dataKey="id"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                    [globalFilterFields]="[
+                    'name']" [showCurrentPageReport]="true">
+                                    <ng-template pTemplate="caption">
+                                        <div class="flex">
+                                            <span class="p-input-icon-left ml-auto">
+                                                <i class="pi pi-search"></i>
+                                                <input pInputText #searchInput type="text" (input)="
+                            dt1.filterGlobal(searchInput.value, 'contains')
+                          " placeholder="Search keyword" />
+                                            </span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Semester</th>
+                                            <th>GPA</th>
+                                            <th>Total Course</th>
+                                            <th>Total Credit Hour</th>
+                                            <th></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-semester>
+                                        <tr>
+                                            <td>{{semester.name}}</td>
+                                            <td>{{ semester.gpa }}</td>
+                                            <td>{{ semester.total_course }}</td>
+                                            <td>{{ semester.credit_hour }}</td>
+
+                                            <td>
+                                                <button pButton pRipple *ngIf="viewPermission" icon="pi pi-eye"
+                                                    class="p-element p-ripple p-button p-component p-button-icon-only p-button-rounded p-button-text mr-2"
+                                                    (click)="viewSemester(semester)"></button>
+
+
+                                                <button pButton pRipple *ngIf="editPermission" icon="pi pi-file-edit"
+                                                    class="p-element p-ripple p-button p-component p-button-icon-only p-button-rounded p-button-text mr-2"
+                                                    (click)="editSemester(semester)"></button>
+
+
+                                                <button pButton pRipple *ngIf="deletePermission" icon="pi pi-trash"
+                                                    class="p-element p-ripple p-button p-component p-button-icon-only p-button-rounded p-button-text mr-2"
+                                                    (click)="deleteSemester(semester)"></button>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="summary">
+                                        <div class="flex align-items-center justify-content-between">
+                                            In total there are
+                                            {{ semesters ? semesters.length : 0 }}
+                                            Semester
+                                        </div>
+                                    </ng-template>
+                                </p-table>
+
+                            </p-scrollPanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<p-dialog header="Semester" [(visible)]="display" [modal]="true" [breakpoints]="{ '960px': '420px' }"
+    [style]="{ width: '70vw', height: '620px' }" [draggable]="false" [resizable]="false">
+    <form [formGroup]="semesterForm">
+        <div class="grid mt-3">
+
+            <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid">
+                <label htmlFor="semester">Semester <span style="color: red">*</span></label>
+                <p-dropdown id="semester" [options]="semester_data" formControlName="semester" optionLabel="name"
+                    optionValue="id" [filter]="true" filterBy="name" [showClear]="true"
+                    placeholder="Select a Semester"></p-dropdown>
+                <small *ngIf="getsemesterform['semester'].invalid && isSubmittedSemester" class="p-error">Semester is
+                    required</small>
+            </div>
+
+            <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid mt-4" *ngIf="!viewDisplayCase && !editDisplayCase">
+                <p-button label="Submit" styleClass="p-button-primary" (click)="onSubmit()">
+                </p-button>
+            </div>
+
+            <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid mt-4" *ngIf="editDisplayCase">
+                <p-button label="Update" styleClass="p-button-primary" (click)="onEditSubmit()">
+                </p-button>
+            </div>
+            <label class="col-12" *ngIf="!viewDisplayCase"> Course's </label>
+        </div>
+    </form>
+
+
+    <form [formGroup]="courseForm">
+        <div class="grid mt-3" *ngIf="!viewDisplayCase">
+
+            <div class="col-12 lg:col-4 xl:col-4 mb-3 p-fluid">
+                <label htmlFor="name">Course Name <span style="color: red">*</span></label>
+                <input formControlName="name" id="name" type="text" pInputText />
+                <small *ngIf="getcourseform['name'].invalid && isSubmitted" class="p-error">Course Name is
+                    required</small>
+            </div>
+
+            <div class="col-12 lg:col-4 xl:col-4 mb-3 p-fluid">
+                <label htmlFor="code">Course Code <span style="color: red">*</span></label>
+                <input formControlName="code" id="code" type="text" pInputText />
+                <small *ngIf="getcourseform['code'].invalid && isSubmitted" class="p-error">Course Code is
+                    required</small>
+            </div>
+
+            <div class="col-12 lg:col-4 xl:col-4 mb-3 p-fluid">
+                <label htmlFor="credit_hour">Credit Hour <span style="color: red">*</span></label>
+                <input formControlName="credit_hour" id="credit_hour" type="number" min="1" max="5" pInputText />
+                <small *ngIf="getcourseform['credit_hour'].invalid && isSubmitted" class="p-error">Credit Hour is
+                    invalid</small>
+            </div>
+
+            <div class="col-12 lg:col-4 xl:col-4 mb-3 p-fluid">
+                <label htmlFor="marks">Marks <span style="color: red">*</span></label>
+                <input formControlName="marks" id="marks" type="number" min="0" max="100" pInputText />
+                <small *ngIf="getcourseform['marks'].invalid && isSubmitted" class="p-error">Marks is
+                    invalid</small>
+            </div>
+
+            <div class="col-12 lg:col-4 xl:col-4" style="margin-top: 22px">
+                <p-button label="Add Course" styleClass="p-button-primary" (click)="onCourseSubmit()"></p-button>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="grid mt-5" *ngIf="courseDisplay">
+        <div class="col-12">
+            <p-table [rows]="10" [value]="course_array" [paginator]="true" [tableStyle]="{ 'min-width': '58rem' }"
+                [rowHover]="true" dataKey="id"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        <h5 class="m-0">Course's</h5>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Credit Hour</th>
+                        <th>Marks</th>
+                        <th>GPA</th>
+                        <th *ngIf="!viewDisplayCase"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr>
+                        <td>{{ rowData.name }}</td>
+                        <td>{{ rowData.code }}</td>
+                        <td>{{ rowData.credit_hour }}</td>
+                        <td>{{ rowData.marks }}</td>
+                        <td>{{ rowData.gpa }}</td>
+                        <td *ngIf="!viewDisplayCase">
+                            <button pButton pRipple icon="pi pi-minus"
+                                class="p-element p-ripple p-button p-component p-button-icon-only p-button-rounded p-button-text mr-2"
+                                (click)="removeVariable(rowData)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+
+</p-dialog>

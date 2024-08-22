@@ -1,0 +1,19 @@
+<ul class="layout-menu">
+  <!-- <button
+    #menubutton
+    class="p-link layout-menu-button layout-topbar-button button-collapse"
+    (click)="layoutService.onMenuToggle()"
+  >
+    <i class="pi pi-bars"></i>
+  </button> -->
+  <ng-container *ngFor="let item of model; let i = index">
+    <li
+      app-menuitem
+      *ngIf="!item.separator"
+      [item]="item"
+      [index]="i"
+      [root]="true"
+    ></li>
+    <li *ngIf="item.separator" class="menu-separator"></li>
+  </ng-container>
+</ul>

@@ -1,0 +1,22 @@
+<div class="layout-wrapper" [ngClass]="containerClass">
+  <app-header></app-header>
+  <div class="layout-sidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="layout-main-container">
+    <!-- <p-scrollPanel
+      [style]="{ width: '100%', height: 'calc(100vh - 50px)' }"
+      styleClass="prmsc-custombar"
+    > -->
+    <div class="layout-main">
+      <div class="grid">
+        <div class="col-12">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+    <!-- </p-scrollPanel> -->
+    <!-- <app-footer></app-footer> -->
+  </div>
+  <div class="overlay"></div>
+</div>

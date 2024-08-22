@@ -1,0 +1,78 @@
+<div
+  class="surface-ground flex align-items-center justify-content-center min-h-screen overflow-hidden auth-wrapper"
+>
+  <div
+    class="flex flex-column align-items-center justify-content-center auth-inner"
+  >
+    <div class="w-full">
+      <div class="text-center mb-4">
+        <h2 class="text-white mb-1 text-4xl"> GPA Calculator System (Admin)</h2>
+        <div class="text-white text-base mb-4">
+          Sign in
+        </div>
+      </div>
+      <form [formGroup]="form">
+        <div>
+
+          <div>
+            <div>
+              <input
+                type="text"
+                formControlName="email"
+                pInputText
+                class="w-full mb-4"
+                placeholder="Email"
+                (keyup.enter)="onSubmit()"
+              />
+            </div>
+            <small
+              *ngIf="loginForm['email'].invalid && isSubmitted"
+              class="p-error"
+              ><span *ngIf="loginForm['email'].errors?.['required']"
+                >Email is required</span
+              >
+              <span *ngIf="loginForm['email'].errors?.['email']"
+                >Email is invalid</span
+              ></small
+            >
+          </div>
+          <div>
+            <div>
+              <p-password
+                formControlName="password"
+                [toggleMask]="true"
+                [placeholder]="'Password'"
+                [feedback]="false"
+                styleClass="mb-5"
+                inputStyleClass="w-full"
+                (keyup.enter)="onSubmit()"
+              ></p-password>
+            </div>
+            <small
+              *ngIf="loginForm['password'].invalid && isSubmitted"
+              class="p-error"
+            >
+              Password is required
+            </small>
+          </div>
+
+          <div class="col-12" *ngIf="isSubmitted && authError">
+            <small class="p-error">{{ authMessage }}</small>
+          </div>
+
+          <div
+            class="flex align-items-center justify-content-between mb-5 gap-5"
+          >
+          
+          </div>
+          <p-button
+            label="Login"
+            class="text-xl"
+            styleClass="p-button-success w-full"
+            (onClick)="onSubmit()"
+          ></p-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

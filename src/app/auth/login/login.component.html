@@ -1,0 +1,96 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen overflow-hidden auth-wrapper">
+  <div class="flex flex-column align-items-center justify-content-center auth-inner">
+    <div class="w-full">
+      <div class="text-center mb-4">
+        <h1 class="text-white mb-1 text-4xl">
+          GPA Calculator System (Student)
+        </h1>
+
+        <div class="text-white text-base mb-4">
+          {{ display ? "Sign in" : "Sign up" }}
+        </div>
+      </div>
+      <form [formGroup]="form">
+        <div>
+          <div class="mb-4">
+            <div *ngIf="!display">
+              <input placeholder="Name" class="w-full" type="text" id="name" formControlName="name"
+                (keyup.enter)="display ? onLoginSubmit() : onSignupSubmit()" pInputText />
+            </div>
+            <small *ngIf="SignupForm['name'].invalid && isSubmitted" class="p-error">Name is required</small>
+          </div>
+          
+          <div class="mb-4">
+            <div class="w-full" *ngIf="!display">
+
+              <p-inputMask mask="9999999999999" placeholder="3740600000000" id="cnic" class="w-full block"
+                formControlName="cnic" (keyup.enter)="display ? onLoginSubmit() : onSignupSubmit()"></p-inputMask>
+            </div>
+            <small *ngIf="SignupForm['cnic'].invalid && isSubmitted" class="p-error"><span
+                *ngIf="SignupForm['cnic'].errors?.['required']">CNIC is required</span>
+              <span *ngIf="SignupForm['cnic'].errors?.['cnic']">CNIC is invalid</span></small>
+          </div>
+          <div class="mb-4">
+            <div *ngIf="!display">
+              <input type="text" formControlName="email" pInputText class="w-full" placeholder="Email"
+                (keyup.enter)="display ? onLoginSubmit() : onSignupSubmit()" />
+            </div>
+            <small *ngIf="SignupForm['email'].invalid && isSubmitted" class="p-error"><span
+                *ngIf="SignupForm['email'].errors?.['required']">Email is required</span>
+              <span *ngIf="SignupForm['email'].errors?.['email']">Email is invalid</span></small>
+          </div>
+
+          <div class="mb-4">
+            <div >
+              <p-inputMask mask="99-999999-999" id="enrollment" class="w-full" placeholder="Enrollment ID"
+                (keyup.enter)="display ? onLoginSubmit() : onSignupSubmit()" formControlName="enrollment"></p-inputMask>
+            </div>
+
+            <small *ngIf="SignupForm['enrollment'].invalid && isSubmitted" class="p-error">Enrollment ID is required</small>
+          </div>
+
+          <div class="mb-5">
+            <div>
+              <p-password formControlName="password" [toggleMask]="true" [placeholder]="'Password'" [feedback]="false"
+                inputStyleClass="w-full" (keyup.enter)="display ? onLoginSubmit() : onSignupSubmit()"></p-password>
+            </div>
+            <small *ngIf="SignupForm['password'].invalid && isSubmitted" class="p-error"><span
+                *ngIf="SignupForm['password'].errors?.['required']">Password is required</span>
+              <span *ngIf="SignupForm['password'].errors?.minlength">Password must be at least 8 characters
+                long</span><span *ngIf="
+                  !SignupForm['password'].errors?.minlength &&
+                  SignupForm['password'].errors?.pattern
+                ">Password must contain at least one lowercase letter, one
+                uppercase letter, one digit and one special character</span></small>
+          </div>
+
+          <div class="col-12" *ngIf="isSubmitted && authError">
+            <small class="p-error">{{ authMessage }}</small>
+          </div>
+
+
+          <p-button *ngIf="display" label="Login" class="text-xl" styleClass="p-button-success w-full"
+            (onClick)="onLoginSubmit()"></p-button>
+
+          <p-button *ngIf="!display" label="Register" class="text-xl" styleClass="p-button-success w-full"
+            (onClick)="onSignupSubmit()"></p-button>
+
+          <div class="flex align-items-right justify-content-between mt-3 gap-5">
+            <div class="flex align-items-center"></div>
+            <a *ngIf="display" class="text-right cursor-pointer text-white text-underline"
+              (click)="onSignupClick()">Signup?</a>
+          </div>
+
+          <div class="flex align-items-right justify-content-between mt-3 gap-5">
+            <div class="flex align-items-center"></div>
+            <a *ngIf="!display" class="text-right cursor-pointer text-white text-underline"
+              (click)="onSigninClick()">Already have account? Login</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

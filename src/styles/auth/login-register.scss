@@ -1,0 +1,64 @@
+.auth-wrapper {
+  background: linear-gradient(
+      0deg,
+      rgb(255 255 255 / 70%),
+      rgb(255 255 255 / 70%)
+    ),
+    url("../../assets/images/auth-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+
+  .p-inputtext {
+    color: var(--surface-500);
+    border-color: #e6e6e6 !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #bebebe !important;
+  }
+  .p-password {
+    width: 100%;
+  }
+  .p-button.p-button-success,
+  .p-buttonset.p-button-success > .p-button,
+  .p-splitbutton.p-button-success > .p-button {
+    box-shadow: 0px 1px 24px 0px rgba(0, 0, 0, 0.3);
+  }
+  .p-checkbox .p-checkbox-box.p-highlight {
+    border-color: #224957;
+    background: #224957;
+  }
+  .auth-inner {
+    padding: 50px 40px;
+    width: 390px;
+    // border-radius: 7px;
+    // opacity: 0.8799999952;
+    // background: #EAE7E5;
+    // box-shadow: 0px 0px 23px 4px rgba(0, 0, 0, 0.07);
+    margin-bottom: 90px;
+    border-radius: 14px;
+    border: 1px solid #57b8ff;
+    background: linear-gradient(
+        62deg,
+        rgba(7, 98, 163, 0.9) 20.61%,
+        rgba(29, 119, 184, 0.9) 82.27%
+      ),
+      url("../../assets/images/auth-card-bg.png");
+    box-shadow: 2px 4px 40px 0px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(35px);
+  }
+  .auth-footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    padding: 10px 0px;
+  }
+}

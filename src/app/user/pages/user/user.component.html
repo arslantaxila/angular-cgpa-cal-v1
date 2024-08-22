@@ -1,0 +1,166 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<div class="grid">
+  <div class="col-12 page-layout">
+    <div class="page-actions" *ngIf="createPermission">
+      <p-button (click)="showDialog()" label="Create User" icon="pi pi-plus"
+        styleClass="p-button-sm btn-transparent"></p-button>
+    </div>
+
+    <div class="page-inner">
+      <div class="flex justify-content-between align-items-center">
+        <div>
+          <!-- <h1 class="text-850 font-bold text-4xl mb-1">
+            {{ employee_name }}
+          </h1> -->
+        </div>
+      </div>
+      <div class="grid mt-5">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="text-white font-bold text-xl mb-0">Users</h5>
+            </div>
+            <div class="card-body">
+              <p-scrollPanel [style]="{ width: '100%', height: '600px' }" styleClass="scroll-color">
+                <p-table #dt1 [value]="users" [rows]="10" [paginator]="true" [tableStyle]="{ 'min-width': '60rem' }"
+                  [rowHover]="true" dataKey="id"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="[
+                    'name'
+                  ]" [showCurrentPageReport]="true">
+                  <ng-template pTemplate="caption">
+                    <!-- <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Manage Geofence Tracking</h5>
+                  </div> -->
+                    <div class="flex">
+                      <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText #searchInput type="text" (input)="
+                            dt1.filterGlobal(searchInput.value, 'contains')
+                          " placeholder="Search keyword" />
+                      </span>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th pSortableColumn="name">
+                        Name
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </th>
+                      <th>Email</th>
+                      <th>Enrollment</th>
+                      <th>Role</th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-user>
+                    <tr>
+                      <td>{{ user.name }}</td>
+                      <td>{{ user.email }}</td>
+                      <td>{{ user.enrollment }}</td>
+                      <td>{{ user.role }}</td>
+                      <td>
+                        <button pButton pRipple *ngIf="editPermission" icon="pi pi-file-edit"
+                          class="p-element p-ripple p-button p-component p-button-icon-only p-button-rounded p-button-text mr-2"
+                          (click)="editUser(user)"></button>
+
+                        <button pButton pRipple *ngIf="deletePermission" icon="pi pi-trash"
+                          class="p-element p-ripple p-button p-component p-button-icon-only p-button-rounded p-button-text mr-2"
+                          (click)="deleteUser(user)"></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                      In total there are
+                      {{ users ? users.length : 0 }}
+                      users.
+                    </div>
+                  </ng-template>
+                </p-table>
+              </p-scrollPanel>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <p-dialog header="User" [(visible)]="display" [modal]="true" [breakpoints]="{ '960px': '420px' }"
+    [style]="{ width: '60vw', height: '500px' }" [draggable]="false" [resizable]="false">
+    <form [formGroup]="UserForm">
+      <div class="grid mt-3">
+
+        <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid">
+          <label htmlFor="role">Role <span style="color: red">*</span></label>
+          <p-dropdown id="role" [options]="roles" formControlName="role" optionLabel="name"
+          optionValue="id" [filter]="true" (onChange)="rolechange($event)" filterBy="name" [showClear]="true" placeholder="Select a Role"
+          ></p-dropdown>
+          <small *ngIf="getuserform['role'].invalid && isSubmitted" class="p-error"><span
+              *ngIf="getuserform['role'].errors?.required">Role is required</span>
+            <span *ngIf="getuserform['role'].errors?.email">Role is invalid</span></small>
+        </div>
+
+        <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid">
+          <label htmlFor="name">Name <span style="color: red">*</span></label>
+          <input formControlName="name" id="name" type="text" pInputText />
+          <small *ngIf="getuserform['name'].invalid && isSubmitted" class="p-error">Name is required</small>
+        </div>
+
+        <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid">
+
+          <label htmlFor="enrollment">Enrollment ID <span *ngIf="!enrollmentrequired" style="color: red">*</span></label>
+          <p-inputMask mask="99-999999-999"  id="enrollment"
+              formControlName="enrollment"></p-inputMask>
+
+          <small *ngIf="getuserform['enrollment'].invalid && isSubmitted" class="p-error">Enrollment ID is
+              required</small>
+
+      </div>
+
+        <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid">
+          <label htmlFor="email">Email <span  style="color: red">*</span></label>
+          <input type="text" id="email" formControlName="email" pInputText />
+          <small *ngIf="getuserform['email'].invalid && isSubmitted" class="p-error"><span
+              *ngIf="getuserform['email'].errors?.required">Email is required</span>
+            <span *ngIf="getuserform['email'].errors?.email">Email is invalid</span></small>
+        </div>
+
+        
+
+        <div class="col-12 lg:col-6 xl:col-6 mb-3 p-fluid">
+          <label htmlFor="mobile">Password <span style="color: red">*</span></label>
+          <p-password [toggleMask]="true" id="password" formControlName="password"></p-password>
+          <small *ngIf="getuserform['password'].invalid && isSubmitted" class="p-error">
+            <span *ngIf="getuserform['password'].errors?.minlength">Password must be at least 8 characters
+              long</span><span *ngIf="
+                        !getuserform['password'].errors?.minlength &&
+                        getuserform['password'].errors?.pattern
+                      ">Password must contain at least one lowercase letter, one
+              uppercase letter, one digit and one special
+              character</span>
+              <span
+              *ngIf="getuserform['password'].errors?.required">Password is required</span>
+            </small>
+        </div>
+
+        <div *ngIf="!editCasedisplay" class="col-12 lg:col-12 xl:col-12"
+          style="margin-top: 22px; display: flex; justify-content: center; align-items: center;">
+          <p-button label="Add User" styleClass="p-button-primary" (click)="addUser()"></p-button>
+        </div>
+
+
+        <div *ngIf="editCasedisplay" class=" col-12 lg:col-12 xl:col-12"
+          style="margin-top: 22px; display: flex; justify-content: center; align-items: center;">
+          <p-button label="Update User" styleClass="p-button-primary" (click)="updateUser()"></p-button>
+        </div>
+
+
+
+      </div>
+    </form>
+
+  </p-dialog>
+</div>

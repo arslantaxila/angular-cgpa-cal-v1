@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~normalize.css/normalize.css";
+@import "styles/layout/layout.scss";
+@import "./styles/base/colors.scss";
+@import "./styles/base/fonts.scss";
+
+//Libraries
+@import "~primeicons/primeicons.css";
+// @import "~primeng/resources/themes/lara-light-blue/theme.css";
+@import "styles/theme/theme.css";
+// @import "~primeng/resources/primeng.css";
+@import "~primeflex/primeflex.css";
+
+//Shared
+@import "./styles/shared/shell.scss";
+
+@import "./styles/base/configuration.scss";
+
+@import "./styles/auth/users.scss";
+
+@import "./styles/custom.scss";

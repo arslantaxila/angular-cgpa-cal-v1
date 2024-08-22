@@ -1,0 +1,35 @@
+<div class="layout-innermenu full-height">
+  <h2>Organization Structure</h2>
+  <p-accordion [activeIndex]="0" class="w-full innermenu-accordion">
+    <p-accordionTab>
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center">
+                <span class="vertical-align-middle">All Departments</span>
+                <i class="pi pi-search ml-2 ml-2"></i>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="innermenu-wrapper">
+                <div class="innermenu-unit item-hover">
+                    <h3>Administration</h3>
+                    <div class="total-employees">
+                        <span>08</span> Employees
+                    </div>
+                    <div class="department-manager">
+                        Manager: <span>John Doe</span>
+                    </div>
+                </div>
+                <div class="innermenu-unit item-hover">
+                    <h3>Administration</h3>
+                    <div class="total-employees">
+                        <span>08</span> Employees
+                    </div>
+                    <div class="department-manager">
+                        Manager: <span>John Doe</span>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-accordionTab>
+</p-accordion>
+</div>
