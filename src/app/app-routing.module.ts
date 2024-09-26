@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserModule } from './user/user.module';
 import { ShellComponent } from './shared/shell/shell.component';
 import { AuthGuard } from './auth/services/auth-guard.service';
-import { RightsGuard } from './auth/services/rights-guard.service';
 
 const routes: Routes = [
   {
@@ -14,7 +13,6 @@ const routes: Routes = [
       {
         path: '',
       loadChildren: () => UserModule,
-        canActivate: [RightsGuard],
       }
     ],
   },
